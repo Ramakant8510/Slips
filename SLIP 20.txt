@@ -1,0 +1,56 @@
+Slip 20 
+Question 1
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="ISO-8859-1">
+    <title>Number to Words</title>
+    <style>
+        .output {
+            color: red;
+            font-size: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h2>Enter a number to convert to words</h2>
+    <form action="numberToWords.jsp" method="post">
+        <label for="number">Number: </label>
+        <input type="text" id="number" name="number" required>
+        <input type="submit" value="Convert">
+    </form>
+
+    <%
+        // Function to convert number to words
+        String convertToWords(int number) {
+            String[] words = {
+                "Zero", "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine"
+            };
+            StringBuilder result = new StringBuilder();
+            while (number > 0) {
+                int digit = number % 10;
+                result.insert(0, words[digit] + " ");
+                number /= 10;
+            }
+            return result.toString().trim();
+        }
+
+        String inputNumber = request.getParameter("number");
+        if (inputNumber != null && !inputNumber.isEmpty()) {
+            try {
+                int number = Integer.parseInt(inputNumber);
+                String wordRepresentation = convertToWords(number);
+                out.println("<div class='output'>");
+                out.println("Number: " + number + " in words is: " + wordRepresentation);
+                out.println("</div>");
+            } catch (NumberFormatException e) {
+                out.println("<div class='output'>Please enter a valid number.</div>");
+            }
+        }
+    %>
+</body>
+</html>
+
+Question 2
+BorderLayout.CENTER

@@ -1,0 +1,129 @@
+Slip no 22
+Que 1
+
+import java.sql.*;
+import java.util.Scanner;
+
+public class EmployeeDatabase {
+    static final String URL = "jdbc:mysql://localhost:3306/your_database";
+    static final String USER = "your_username";
+    static final String PASSWORD = "your_password";
+
+    public static void main(String[] args) {
+        try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
+             Scanner scanner = new Scanner(System.in)) {
+
+            while (true) {
+                System.out.println("\n1. Insert Employee\n2. Update Salary\n3. Display Employees\n4. Exit");
+                System.out.print("Enter your choice: ");
+                int choice = scanner.nextInt();
+                scanner.nextLine(); // Consume newline
+
+                switch (choice) {
+                    case 1:
+                        System.out.print("Enter Employee Number: ");
+                        int eno = scanner.nextInt();
+                        scanner.nextLine();
+                        System.out.print("Enter Employee Name: ");
+                        String ename = scanner.nextLine();
+                        System.out.print("Enter Salary: ");
+                        double salary = scanner.nextDouble();
+                        insertEmployee(conn, eno, ename, salary);
+                        break;
+                    case 2:
+                        System.out.print("Enter Employee Number to update: ");
+                        int updateEno = scanner.nextInt();
+                        System.out.print("Enter new Salary: ");
+                        double newSalary = scanner.nextDouble();
+                        updateSalary(conn, updateEno, newSalary);
+                        break;
+                    case 3:
+                        displayEmployees(conn);
+                        break;
+                    case 4:
+                        System.out.println("Exiting...");
+                        return;
+                    default:
+                        System.out.println("Invalid choice. Try again.");
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    static void insertEmployee(Connection conn, int eno, String ename, double salary) throws SQLException {
+        String sql = "INSERT INTO Employee (ENo, EName, Salary) VALUES (?, ?, ?)";
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, eno);
+            stmt.setString(2, ename);
+            stmt.setDouble(3, salary);
+            stmt.executeUpdate();
+            System.out.println("Employee inserted successfully.");
+        }
+    }
+
+    static void updateSalary(Connection conn, int eno, double salary) throws SQLException {
+        String sql = "UPDATE Employee SET Salary = ? WHERE ENo = ?";
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setDouble(1, salary);
+            stmt.setInt(2, eno);
+            int rowsUpdated = stmt.executeUpdate();
+            if (rowsUpdated > 0) {
+                System.out.println("Salary updated successfully.");
+            } else {
+                System.out.println("Employee not found.");
+            }
+        }
+    }
+
+    static void displayEmployees(Connection conn) throws SQLException {
+        String sql = "SELECT * FROM Employee";
+        try (Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+            while (rs.next()) {
+                System.out.println("ENo: " + rs.getInt("ENo") +
+                        ", Name: " + rs.getString("EName") +
+                        ", Salary: " + rs.getDouble("Salary"));
+            }
+        }
+    }
+}
+
+Que 2 
+
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ page import="java.util.Calendar" %>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Greeting Page</title>
+</head>
+<body>
+    <form method="post">
+        <label>Enter Your Name: </label>
+        <input type="text" name="username">
+        <input type="submit" value="Greet Me">
+    </form>
+
+    <%
+        String username = request.getParameter("username");
+        if (username != null && !username.trim().isEmpty()) {
+            Calendar calendar = Calendar.getInstance();
+            int hour = calendar.get(Calendar.HOUR_OF_DAY);
+            String greeting;
+
+            if (hour < 12) {
+                greeting = "Good Morning";
+            } else if (hour < 18) {
+                greeting = "Good Afternoon";
+            } else {
+                greeting = "Good Evening";
+            }
+    %>
+    <h2><%= greeting %>, <%= username %>!</h2>
+    <%
+        }
+    %>
+</body>
+</html>

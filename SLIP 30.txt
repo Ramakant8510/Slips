@@ -1,0 +1,80 @@
+Slip no 30
+Que 1
+
+SynchronizationExample.java :
+
+class SharedResource {
+    synchronized void printNumbers(int n) {
+        for (int i = 1; i <= 5; i++) {
+            System.out.println(n * i);
+            try {
+                Thread.sleep(500);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+}
+
+class MyThread extends Thread {
+    SharedResource sr;
+    int num;
+
+    MyThread(SharedResource sr, int num) {
+        this.sr = sr;
+        this.num = num;
+    }
+
+    public void run() {
+        sr.printNumbers(num);
+    }
+}
+
+public class SynchronizationExample {
+    public static void main(String[] args) {
+        SharedResource sr = new SharedResource();
+
+        MyThread t1 = new MyThread(sr, 2);
+        MyThread t2 = new MyThread(sr, 3);
+
+        t1.start();
+        t2.start();
+    }
+}
+
+Que 2 
+
+import java.sql.*;
+
+public class ScrollableResultSetExample {
+    public static void main(String[] args) {
+        String url = "jdbc:mysql://localhost:3306/your_database";
+        String user = "root"; // Change as needed
+        String password = "your_password";
+        String query = "SELECT * FROM Teacher";
+
+        try (Connection conn = DriverManager.getConnection(url, user, password);
+             Statement stmt = conn.createStatement(
+                     ResultSet.TYPE_SCROLL_INSENSITIVE, 
+                     ResultSet.CONCUR_READ_ONLY);
+             ResultSet rs = stmt.executeQuery(query)) {
+
+            System.out.println("Forward Traversal:");
+            while (rs.next()) {
+                System.out.println(rs.getInt("TID") + " - " +
+                                   rs.getString("TName") + " - " +
+                                   rs.getDouble("Salary"));
+            }
+
+            System.out.println("\nBackward Traversal:");
+            while (rs.previous()) {
+                System.out.println(rs.getInt("TID") + " - " +
+                                   rs.getString("TName") + " - " +
+                                   rs.getDouble("Salary"));
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+}S

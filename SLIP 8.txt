@@ -1,0 +1,81 @@
+Slip no 8
+Que 1 :
+
+class MyThread extends Thread {
+    private String text;
+    private int times;
+
+    // Constructor to initialize the text and number of times to print
+    public MyThread(String text, int times) {
+        this.text = text;
+        this.times = times;
+    }
+
+    @Override
+    public void run() {
+        for (int i = 0; i < times; i++) {
+            System.out.println(text);
+        }
+    }
+
+    public static void main(String[] args) {
+        // Create three threads with different text and times
+        MyThread thread1 = new MyThread("COVID19", 10);
+        MyThread thread2 = new MyThread("LOCKDOWN2020", 20);
+        MyThread thread3 = new MyThread("VACCINATED2021", 30);
+
+        // Start the threads
+        thread1.start();
+        thread2.start();
+        thread3.start();
+    }
+}
+
+Que 2:
+
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Prime Number Checker</title>
+    <style>
+        .result { color: red; font-size: 18px; }
+    </style>
+</head>
+<body>
+    <h2>Check if a Number is Prime</h2>
+    <form method="post">
+        Enter a number: <input type="text" name="num" />
+        <input type="submit" value="Check" />
+    </form>
+
+    <%
+        String numStr = request.getParameter("num");
+        if (numStr != null && !numStr.isEmpty()) {
+            int num = Integer.parseInt(numStr);
+            boolean isPrime = true;
+            if (num <= 1) {
+                isPrime = false;
+            } else {
+                for (int i = 2; i <= Math.sqrt(num); i++) {
+                    if (num % i == 0) {
+                        isPrime = false;
+                        break;
+                    }
+                }
+            }
+    %>
+
+    <div class="result">
+        <% if (isPrime) { %>
+            <p><%= num %> is a prime number.</p>
+        <% } else { %>
+            <p><%= num %> is not a prime number.</p>
+        <% } %>
+    </div>
+
+    <%
+        }
+    %>
+</body>
+</html>

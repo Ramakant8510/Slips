@@ -1,0 +1,56 @@
+Slip no 25
+Que 1
+
+voter.jsp :
+
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
+<%
+    String name = request.getParameter("name");
+    String ageStr = request.getParameter("age");
+    int age = (ageStr != null && !ageStr.isEmpty()) ? Integer.parseInt(ageStr) : 0;
+%>
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Voter Eligibility</title>
+</head>
+<body>
+    <h2>Voter Eligibility Check</h2>
+    <%
+        if (age >= 18) {
+            out.println("<p>Hello, " + name + "! You are eligible to vote.</p>");
+        } else {
+            out.println("<p>Sorry, " + name + ". You are not eligible to vote.</p>");
+        }
+    %>
+</body>
+</html>
+
+Que 2 
+
+import java.sql.*;
+import java.util.Scanner;
+
+public class DDLQueryExecutor {
+    public static void main(String[] args) {
+        String url = "jdbc:mysql://localhost:3306/your_database";
+        String user = "root"; // Change as per your credentials
+        String password = "your_password";
+
+        try (Connection conn = DriverManager.getConnection(url, user, password);
+             Scanner scanner = new Scanner(System.in)) {
+            
+            System.out.println("Enter DDL Query (CREATE, ALTER, DROP):");
+            String ddlQuery = scanner.nextLine();
+
+            try (Statement stmt = conn.createStatement()) {
+                stmt.executeUpdate(ddlQuery);
+                System.out.println("Query executed successfully!");
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+}

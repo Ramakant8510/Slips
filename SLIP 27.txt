@@ -1,0 +1,67 @@
+Slip no 27
+Que 1
+
+import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+import java.sql.*;
+
+public class CollegeTable {
+    public static void main(String[] args) {
+        String url = "jdbc:mysql://localhost:3306/your_database";
+        String user = "root"; // Change as needed
+        String password = "your_password";
+        String query = "SELECT * FROM College";
+
+        JFrame frame = new JFrame("College Details");
+        DefaultTableModel model = new DefaultTableModel();
+        JTable table = new JTable(model);
+
+        model.addColumn("CID");
+        model.addColumn("CName");
+        model.addColumn("Address");
+        model.addColumn("Year");
+
+        try (Connection conn = DriverManager.getConnection(url, user, password);
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(query)) {
+
+            while (rs.next()) {
+                model.addRow(new Object[]{
+                    rs.getInt("CID"),
+                    rs.getString("CName"),
+                    rs.getString("Address"),
+                    rs.getInt("Year")
+                });
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        frame.add(new JScrollPane(table));
+        frame.setSize(500, 300);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setVisible(true);
+    }
+}
+
+Que 2
+
+import java.io.IOException;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+@WebServlet("/SessionTimeoutServlet")
+public class SessionTimeoutServlet extends HttpServlet {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        HttpSession session = request.getSession();
+        session.setMaxInactiveInterval(600); // Set session timeout to 10 minutes (600 seconds)
+        
+        response.setContentType("text/html");
+        response.getWriter().println("<h2>Session timeout set to 10 minutes.</h2>");
+    }
+}

@@ -1,0 +1,98 @@
+Slip no 4 
+Que 1 :
+
+import javax.swing.*;
+import java.awt.*;
+
+public class BlinkingText extends JFrame implements Runnable {
+    private JLabel label;
+
+    public BlinkingText() {
+        // Frame settings
+        setTitle("Blinking Text");
+        setSize(300, 200);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setLayout(new FlowLayout());
+
+        // Create a label
+        label = new JLabel("Blinking Text");
+        label.setFont(new Font("Arial", Font.BOLD, 20));
+        add(label);
+
+        // Start the blinking thread
+        Thread thread = new Thread(this);
+        thread.start();
+
+        setVisible(true);
+    }
+
+    public void run() {
+        try {
+            while (true) {
+                label.setVisible(!label.isVisible()); // Toggle visibility
+                Thread.sleep(500); // Wait for 500ms
+            }
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void main(String[] args) {
+        new BlinkingText();
+    }
+}
+
+Que 2 :
+
+import java.util.*;
+
+public class CitySTDCode {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        Map<String, String> cityMap = new HashMap<>();
+
+        // (i) Add new cities (No duplicates)
+        cityMap.put("Mumbai", "022");
+        cityMap.put("Delhi", "011");
+        cityMap.put("Bangalore", "080");
+
+        System.out.println("Initial Cities: " + cityMap);
+
+        // Adding a new city
+        System.out.print("Enter city name to add: ");
+        String newCity = scanner.nextLine();
+        System.out.print("Enter STD code: ");
+        String newCode = scanner.nextLine();
+
+        if (!cityMap.containsKey(newCity)) {
+            cityMap.put(newCity, newCode);
+            System.out.println("City added successfully!");
+        } else {
+            System.out.println("City already exists!");
+        }
+
+        System.out.println("Updated Cities: " + cityMap);
+
+        // (ii) Remove a city
+        System.out.print("Enter city name to remove: ");
+        String removeCity = scanner.nextLine();
+        if (cityMap.remove(removeCity) != null) {
+            System.out.println("City removed successfully!");
+        } else {
+            System.out.println("City not found!");
+        }
+
+        System.out.println("Remaining Cities: " + cityMap);
+
+        // (iii) Search for a city and display the STD code
+        System.out.print("Enter city name to search: ");
+        String searchCity = scanner.nextLine();
+        if (cityMap.containsKey(searchCity)) {
+            System.out.println("STD Code of " + searchCity + ": " + cityMap.get(searchCity));
+        } else {
+            System.out.println("City not found!");
+        }
+
+        scanner.close();
+    }
+}

@@ -1,0 +1,76 @@
+Slip 14 :
+Question 1
+import java.io.*;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
+class FileSearchTask implements Runnable {
+    private final File file;
+    private final String searchTerm;
+
+    public FileSearchTask(File file, String searchTerm) {
+        this.file = file;
+        this.searchTerm = searchTerm;
+    }
+
+    public void run() {
+        try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+            String line;
+            int lineNumber = 0;
+
+            while ((line = reader.readLine()) != null) {
+                lineNumber++;
+                if (line.contains(searchTerm)) {
+                    System.out.println("Found in " + file.getName() + " at line " + lineNumber + ": " + line);
+                }
+            }
+        } catch (IOException e) {
+            System.out.println("Error reading file: " + file.getName());
+        }
+    }
+}
+
+public class SimpleSearchEngine {
+    public static void main(String[] args) {
+        File folder = new File(".");  // Current directory
+        String searchTerm = "your_search_term"; // Replace with user input
+
+        File[] files = folder.listFiles((dir, name) -> name.endsWith(".txt"));
+        if (files == null || files.length == 0) {
+            System.out.println("No text files found.");
+            return;
+        }
+
+        ExecutorService executor = Executors.newFixedThreadPool(files.length);
+        for (File file : files) {
+            executor.execute(new FileSearchTask(file, searchTerm));
+        }
+        executor.shutdown();
+    }
+}
+
+Question 2
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
+<html>
+<head>
+    <title>Sum of First and Last Digit</title>
+</head>
+<body>
+    <h2>Enter a Number</h2>
+    <form method="post">
+        <input type="text" name="number" required>
+        <input type="submit" value="Calculate Sum">
+    </form>
+
+    <% 
+        String numStr = request.getParameter("number");
+        if (numStr != null && !numStr.isEmpty()) {
+            int num = Integer.parseInt(numStr);
+            int firstDigit = Integer.parseInt(String.valueOf(numStr.charAt(0)));
+            int lastDigit = num % 10;
+            int sum = firstDigit + lastDigit;
+    %>
+        <p style="color: red; font-size: 18px;">Sum: <%= sum %></p>
+    <% } %>
+</body>
+</html>

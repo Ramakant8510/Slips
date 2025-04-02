@@ -1,0 +1,64 @@
+Slip 13:
+Question 1
+import java.sql.*;
+
+public class DatabaseInfo {
+    public static void main(String[] args) {
+        try {
+            // Database connection
+            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/YOUR_DATABASE", "USERNAME", "PASSWORD");
+
+            // Get database metadata
+            DatabaseMetaData dbMetaData = con.getMetaData();
+            System.out.println("Database Product Name: " + dbMetaData.getDatabaseProductName());
+            System.out.println("Database Version: " + dbMetaData.getDatabaseProductVersion());
+            System.out.println("Driver Name: " + dbMetaData.getDriverName());
+
+            // Get list of tables
+            ResultSet tables = dbMetaData.getTables(null, null, "%", new String[]{"TABLE"});
+            System.out.println("\nTables in the database:");
+            while (tables.next()) {
+                System.out.println(tables.getString("TABLE_NAME"));
+            }
+
+            con.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+}
+
+Question 2
+import java.util.Random;
+
+class CustomThread extends Thread {
+    private int sleepTime;
+
+    public CustomThread(String name) {
+        super(name);
+        this.sleepTime = new Random().nextInt(5000); // Random sleep time (0-4999 ms)
+    }
+
+    public void run() {
+        try {
+            System.out.println(getName() + " is created.");
+            System.out.println(getName() + " is sleeping for " + sleepTime + " ms.");
+            Thread.sleep(sleepTime);
+            System.out.println(getName() + " is now dead.");
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+}
+
+public class ThreadLifecycle {
+    public static void main(String[] args) {
+        CustomThread t1 = new CustomThread("Thread-1");
+        CustomThread t2 = new CustomThread("Thread-2");
+        CustomThread t3 = new CustomThread("Thread-3");
+
+        t1.start();
+        t2.start();
+        t3.start();
+    }
+}

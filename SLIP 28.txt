@@ -1,0 +1,52 @@
+Slip no 28
+Que 1
+
+reverseString.jsp :
+
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
+<%
+    String input = request.getParameter("text");
+    String reversed = "";
+
+    if (input != null && !input.isEmpty()) {
+        reversed = new StringBuilder(input).reverse().toString();
+    }
+%>
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Reverse String</title>
+</head>
+<body>
+    <form method="post">
+        <label>Enter a String:</label>
+        <input type="text" name="text" required>
+        <input type="submit" value="Reverse">
+    </form>
+    <% if (!reversed.isEmpty()) { %>
+        <h3>Reversed String: <%= reversed %></h3>
+    <% } %>
+</body>
+</html>
+
+Que 2 
+
+ThreadName.java :
+
+class ThreadExample extends Thread {
+    public void run() {
+        System.out.println("Currently Executing Thread: " + Thread.currentThread().getName());
+    }
+
+    public static void main(String[] args) {
+        ThreadExample t1 = new ThreadExample();
+        ThreadExample t2 = new ThreadExample();
+
+        t1.setName("Thread-1");
+        t2.setName("Thread-2");
+
+        t1.start();
+        t2.start();
+    }
+}

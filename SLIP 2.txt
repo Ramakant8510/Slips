@@ -1,0 +1,77 @@
+Slip no 2
+Que 1 :
+
+import java.util.*;
+
+public class FriendNames {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        HashSet<String> friendSet = new HashSet<>();
+
+        System.out.print("Enter number of friends (N): ");
+        int n = scanner.nextInt();
+        scanner.nextLine(); // Consume newline
+
+        System.out.println("Enter friend names:");
+        for (int i = 0; i < n; i++) {
+            friendSet.add(scanner.nextLine());
+        }
+
+        // Display sorted names using TreeSet
+        TreeSet<String> sortedFriends = new TreeSet<>(friendSet);
+        System.out.println("Friends in ascending order:");
+        for (String name : sortedFriends) {
+            System.out.println(name);
+        }
+
+        scanner.close();
+    }
+}
+
+Que 2 :
+
+• Servlet code :
+
+import java.io.*;
+import javax.servlet.*;
+import javax.servlet.http.*;
+
+public class ServerInfoServlet extends HttpServlet {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        response.setContentType("text/html");
+        PrintWriter out = response.getWriter();
+
+        // Get client info
+        String ipAddress = request.getRemoteAddr();
+        String browser = request.getHeader("User-Agent");
+
+        // Get server info
+        ServletContext context = getServletContext();
+        String serverOS = System.getProperty("os.name");
+        String loadedServlets = context.getServletContextName();
+
+        out.println("<html><body>");
+        out.println("<h2>Client Information</h2>");
+        out.println("<p><b>IP Address:</b> " + ipAddress + "</p>");
+        out.println("<p><b>Browser Type:</b> " + browser + "</p>");
+        
+        out.println("<h2>Server Information</h2>");
+        out.println("<p><b>Operating System:</b> " + serverOS + "</p>");
+        out.println("<p><b>Loaded Servlet Name:</b> " + loadedServlets + "</p>");
+        out.println("</body></html>");
+    }
+}
+
+• web.xml
+
+<web-app>
+    <servlet>
+        <servlet-name>ServerInfoServlet</servlet-name>
+        <servlet-class>ServerInfoServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>ServerInfoServlet</servlet-name>
+        <url-pattern>/serverinfo</url-pattern>
+    </servlet-mapping>
+</web-app>

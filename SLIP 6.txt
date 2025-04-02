@@ -1,0 +1,61 @@
+Slip no 6
+Que 1 :
+
+import java.util.*;
+
+public class UniqueSortedNumbers {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        TreeSet<Integer> numbers = new TreeSet<>();
+
+        // Accept 'n' numbers
+        System.out.print("Enter the number of elements: ");
+        int n = scanner.nextInt();
+
+        System.out.println("Enter " + n + " unique numbers:");
+        for (int i = 0; i < n; i++) {
+            numbers.add(scanner.nextInt());  // TreeSet prevents duplicates
+        }
+
+        // Display sorted numbers
+        System.out.println("Sorted unique numbers: " + numbers);
+
+        // Search for an element
+        System.out.print("Enter a number to search: ");
+        int searchNum = scanner.nextInt();
+        if (numbers.contains(searchNum)) {
+            System.out.println(searchNum + " is present in the collection.");
+        } else {
+            System.out.println(searchNum + " is not found.");
+        }
+
+        scanner.close();
+    }
+}
+
+Que 2 :
+
+class TrafficSignal implements Runnable {
+    private String[] signals = {"RED", "GREEN", "YELLOW"};
+    private int[] durations = {5000, 4000, 2000}; // Durations in milliseconds
+
+    public void run() {
+        int i = 0;
+        while (true) {
+            System.out.println("Signal: " + signals[i]);
+            try {
+                Thread.sleep(durations[i]); // Wait for the signal duration
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            i = (i + 1) % 3; // Cycle through signals
+        }
+    }
+}
+
+public class TrafficSimulation {
+    public static void main(String[] args) {
+        Thread signalThread = new Thread(new TrafficSignal());
+        signalThread.start();
+    }
+}

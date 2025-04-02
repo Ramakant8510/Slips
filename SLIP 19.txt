@@ -1,0 +1,135 @@
+Slip 19 
+Question 1
+import javax.servlet.*;
+import javax.servlet.http.*;
+import java.io.*;
+import java.sql.*;
+
+public class LoginServlet extends HttpServlet {
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        // Set content type for the response
+        response.setContentType("text/html");
+        PrintWriter out = response.getWriter();
+
+        // Get the username and password from the form
+        String username = request.getParameter("username");
+        String password = request.getParameter("password");
+
+        // Database connection details
+        String dbURL = "jdbc:mysql://localhost:3306/your_database";
+        String dbUsername = "root"; // your DB username
+        String dbPassword = "password"; // your DB password
+
+        // SQL query to check for the username and password
+        String query = "SELECT * FROM users WHERE username = ? AND password = ?";
+
+        try (Connection conn = DriverManager.getConnection(dbURL, dbUsername, dbPassword);
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+
+            // Set the parameters for the prepared statement
+            stmt.setString(1, username);
+            stmt.setString(2, password);
+
+            // Execute the query
+            ResultSet rs = stmt.executeQuery();
+
+            // Check if the username and password match any record
+            if (rs.next()) {
+                out.println("<h1>Welcome, " + username + "!</h1>");
+            } else {
+                out.println("<h1>Error: Invalid username or password.</h1>");
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            out.println("<h1>Error: Could not connect to the database.</h1>");
+        }
+
+        out.close();
+    }
+}
+
+Question 2
+import javax.servlet.*;
+import javax.servlet.http.*;
+import java.io.*;
+import java.sql.*;
+
+public class LoginServlet extends HttpServlet {
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        // Set content type for the response
+        response.setContentType("text/html");
+        PrintWriter out = response.getWriter();
+
+        // Get the username and password from the form
+        String username = request.getParameter("username");
+        String password = request.getParameter("password");
+
+        // Database connection details
+        String dbURL = "jdbc:mysql://localhost:3306/your_database";
+        String dbUsername = "root"; // your DB username
+        String dbPassword = "password"; // your DB password
+
+        // SQL query to check for the username and password
+        String query = "SELECT * FROM users WHERE username = ? AND password = ?";
+
+        try (Connection conn = DriverManager.getConnection(dbURL, dbUsername, dbPassword);
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+
+            // Set the parameters for the prepared statement
+            stmt.setString(1, username);
+            stmt.setString(2, password);
+
+            // Execute the query
+            ResultSet rs = stmt.executeQuery();
+
+            // Check if the username and password match any record
+            if (rs.next()) {
+                out.println("<h1>Welcome, " + username + "!</h1>");
+            } else {
+                out.println("<h1>Error: Invalid username or password.</h1>");
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            out.println("<h1>Error: Could not connect to the database.</h1>");
+        }
+
+        out.close();
+    }
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Login Page</title>
+</head>
+<body>
+    <h2>Login</h2>
+    <form action="LoginServlet" method="POST">
+        <label for="username">Username:</label><br>
+        <input type="text" id="username" name="username" required><br><br>
+
+        <label for="password">Password:</label><br>
+        <input type="password" id="password" name="password" required><br><br>
+
+        <input type="submit" value="Login">
+    </form>
+</body>
+</html>
+CREATE TABLE users (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(50) NOT NULL,
+    password VARCHAR(50) NOT NULL
+);
+<web-app>
+    <servlet>
+        <servlet-name>LoginServlet</servlet-name>
+        <servlet-class>LoginServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>LoginServlet</servlet-name>
+        <url-pattern>/LoginServlet</url-pattern>
+    </servlet-mapping>
+</web-app>

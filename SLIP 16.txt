@@ -1,0 +1,93 @@
+Slip 16 
+
+Question 1
+import java.util.*;
+
+public class TreeSetExample {
+    public static void main(String[] args) {
+        // Create a TreeSet to store color names (Strings)
+        TreeSet<String> colors = new TreeSet<>();
+
+        // Adding some colors to the TreeSet
+        colors.add("Red");
+        colors.add("Blue");
+        colors.add("Green");
+        colors.add("Yellow");
+        colors.add("Black");
+        colors.add("White");
+
+        // Print out the contents of the TreeSet in ascending order
+        System.out.println("Colors in ascending order:");
+        for (String color : colors) {
+            System.out.println(color);
+        }
+    }
+}
+
+Question 2
+import java.sql.*;
+
+public class TeacherDetails {
+    public static void main(String[] args) {
+        // JDBC connection details
+        String url = "jdbc:mysql://localhost:3306/school";
+        String username = "root";
+        String password = "password";
+
+        // SQL query strings
+        String insertQuery = "INSERT INTO Teacher (TNo, TName, Subject) VALUES (?, ?, ?)";
+        String selectQuery = "SELECT * FROM Teacher WHERE Subject = ?";
+
+        // Insert records into Teacher table
+        try (Connection connection = DriverManager.getConnection(url, username, password)) {
+            
+            // Insert records using PreparedStatement
+            PreparedStatement insertStmt = connection.prepareStatement(insertQuery);
+            insertStmt.setInt(1, 101);
+            insertStmt.setString(2, "John Doe");
+            insertStmt.setString(3, "JAVA");
+            insertStmt.executeUpdate();
+
+            insertStmt.setInt(1, 102);
+            insertStmt.setString(2, "Jane Smith");
+            insertStmt.setString(3, "Python");
+            insertStmt.executeUpdate();
+
+            insertStmt.setInt(1, 103);
+            insertStmt.setString(2, "David Lee");
+            insertStmt.setString(3, "JAVA");
+            insertStmt.executeUpdate();
+
+            insertStmt.setInt(1, 104);
+            insertStmt.setString(2, "Emily Johnson");
+            insertStmt.setString(3, "C++");
+            insertStmt.executeUpdate();
+
+            insertStmt.setInt(1, 105);
+            insertStmt.setString(2, "Michael Brown");
+            insertStmt.setString(3, "JAVA");
+            insertStmt.executeUpdate();
+
+            // Fetch and display details of teachers who teach JAVA
+            PreparedStatement selectStmt = connection.prepareStatement(selectQuery);
+            selectStmt.setString(1, "JAVA");
+
+            ResultSet rs = selectStmt.executeQuery();
+            System.out.println("Teachers teaching JAVA:");
+            while (rs.next()) {
+                int tNo = rs.getInt("TNo");
+                String tName = rs.getString("TName");
+                String subject = rs.getString("Subject");
+                System.out.println("TNo: " + tNo + ", TName: " + tName + ", Subject: " + subject);
+            }
+            
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+}
+CREATE TABLE Teacher (
+    TNo INT PRIMARY KEY,
+    TName VARCHAR(100),
+    Subject VARCHAR(100)
+);

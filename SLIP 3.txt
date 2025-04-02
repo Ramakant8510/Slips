@@ -1,0 +1,88 @@
+Slip no 3
+Que 1 :
+
+• SQL code
+
+CREATE DATABASE hospital;
+USE hospital;
+
+CREATE TABLE patients (
+    PNo INT PRIMARY KEY,
+    PName VARCHAR(50),
+    Address VARCHAR(100),
+    Age INT,
+    Disease VARCHAR(50)
+);
+
+INSERT INTO patients VALUES (1, 'John Doe', '123 Street, NY', 45, 'Flu');
+
+• JSP code (patients.jsp)
+
+<%@ page import="java.sql.*" %>
+<html>
+<head>
+    <title>Patient Details</title>
+</head>
+<body>
+    <h2>Patient Details</h2>
+    <table border="1">
+        <tr>
+            <th>PNo</th>
+            <th>PName</th>
+            <th>Address</th>
+            <th>Age</th>
+            <th>Disease</th>
+        </tr>
+        <%
+            try {
+                Class.forName("com.mysql.cj.jdbc.Driver");
+                Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/hospital", "root", "password");
+                Statement stmt = conn.createStatement();
+                ResultSet rs = stmt.executeQuery("SELECT * FROM patients");
+
+                while (rs.next()) {
+        %>
+                    <tr>
+                        <td><%= rs.getInt("PNo") %></td>
+                        <td><%= rs.getString("PName") %></td>
+                        <td><%= rs.getString("Address") %></td>
+                        <td><%= rs.getInt("Age") %></td>
+                        <td><%= rs.getString("Disease") %></td>
+                    </tr>
+        <%
+                }
+                conn.close();
+            } catch (Exception e) {
+                out.println("Error: " + e.getMessage());
+            }
+        %>
+    </table>
+</body>
+</html>
+
+Que 2 :
+
+import java.util.*;
+
+public class LinkedListExample {
+    public static void main(String[] args) {
+        LinkedList<String> list = new LinkedList<>();
+
+        // (i) Add elements at the end
+        list.add("Apple");
+        list.add("Banana");
+        list.add("Cherry");
+        System.out.println("List after adding elements: " + list);
+
+        // (ii) Delete first element
+        list.removeFirst();
+        System.out.println("List after deleting first element: " + list);
+
+        // (iii) Display contents in reverse order
+        System.out.print("List in reverse order: ");
+        ListIterator<String> iterator = list.listIterator(list.size());
+        while (iterator.hasPrevious()) {
+            System.out.print(iterator.previous() + " ");
+        }
+    }
+}

@@ -1,0 +1,58 @@
+Slip no 26
+Que 1
+
+DeleteEmployee.java :
+
+import java.sql.*;
+
+public class DeleteEmployee {
+    public static void main(String[] args) {
+        if (args.length != 1) {
+            System.out.println("Usage: java DeleteEmployee <EmployeeID>");
+            return;
+        }
+
+        int empId = Integer.parseInt(args[0]);
+        String url = "jdbc:mysql://localhost:3306/your_database";
+        String user = "root"; // Change as needed
+        String password = "your_password";
+        String query = "DELETE FROM Employee WHERE ENo = ?";
+
+        try (Connection conn = DriverManager.getConnection(url, user, password);
+             PreparedStatement pstmt = conn.prepareStatement(query)) {
+             
+            pstmt.setInt(1, empId);
+            int rowsAffected = pstmt.executeUpdate();
+
+            if (rowsAffected > 0) {
+                System.out.println("Employee deleted successfully.");
+            } else {
+                System.out.println("No employee found with ID: " + empId);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+}
+
+Que 2 
+
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
+<%
+    String numStr = request.getParameter("number");
+    int num = (numStr != null && !numStr.isEmpty()) ? Integer.parseInt(numStr) : 0;
+    
+    int first = Integer.parseInt(Character.toString(numStr.charAt(0)));
+    int last = Integer.parseInt(Character.toString(numStr.charAt(numStr.length() - 1)));
+    int sum = first + last;
+%>
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Sum of First and Last Digit</title>
+</head>
+<body>
+    <h2 style="color:red; font-size:18px;">Sum: <%= sum %></h2>
+</body>
+</html>

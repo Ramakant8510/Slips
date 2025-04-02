@@ -1,0 +1,60 @@
+Slip no 29
+Que 1
+
+DonarTableMetaData.java :
+
+import java.sql.*;
+
+public class DonarTableMetaData {
+    public static void main(String[] args) {
+        String url = "jdbc:mysql://localhost:3306/your_database";
+        String user = "root"; // Change as needed
+        String password = "your_password";
+        String query = "SELECT * FROM DONAR";
+
+        try (Connection conn = DriverManager.getConnection(url, user, password);
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(query)) {
+
+            ResultSetMetaData rsmd = rs.getMetaData();
+            int columnCount = rsmd.getColumnCount();
+
+            System.out.println("DONAR Table Column Information:");
+            for (int i = 1; i <= columnCount; i++) {
+                System.out.println("Column " + i + ": " + rsmd.getColumnName(i) +
+                        " (" + rsmd.getColumnTypeName(i) + ")");
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+}
+
+Que 2 
+
+LinkedListOperations.java :
+
+import java.util.LinkedList;
+
+public class LinkedListOperations {
+    public static void main(String[] args) {
+        LinkedList<Integer> list = new LinkedList<>();
+
+        // Adding elements
+        list.add(10);
+        list.add(20);
+        list.add(30);
+
+        // i. Add element at first position
+        list.addFirst(5);
+        System.out.println("After adding at first position: " + list);
+
+        // ii. Delete last element
+        list.removeLast();
+        System.out.println("After deleting last element: " + list);
+
+        // iii. Display size of LinkedList
+        System.out.println("Size of LinkedList: " + list.size());
+    }
+}

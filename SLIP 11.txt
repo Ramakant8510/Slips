@@ -1,0 +1,97 @@
+Slip 11:
+Question 1
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Search Customer</title>
+</head>
+<body>
+    <h2>Search Customer Details</h2>
+    <form action="SearchCustomerServlet" method="post">
+        Enter Customer Number: <input type="text" name="customerNumber" required>
+        <input type="submit" value="Search">
+    </form>
+</body>
+</html>
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.sql.*;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+@WebServlet("/SearchCustomerServlet")
+public class SearchCustomerServlet extends HttpServlet {
+    private static final long serialVersionUID = 1L;
+
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        response.setContentType("text/html");
+        PrintWriter out = response.getWriter();
+
+        String customerNumber = request.getParameter("customerNumber");
+
+        try {
+            // Database connection
+            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/YOUR_DATABASE", "USERNAME", "PASSWORD");
+            PreparedStatement pst = con.prepareStatement("SELECT * FROM customer WHERE customer_number = ?");
+            pst.setString(1, customerNumber);
+            ResultSet rs = pst.executeQuery();
+
+            if (rs.next()) {
+                out.println("<h2>Customer Details</h2>");
+                out.println("<p>Customer Number: " + rs.getString("customer_number") + "</p>");
+                out.println("<p>Customer Name: " + rs.getString("customer_name") + "</p>");
+                out.println("<p>Customer Email: " + rs.getString("customer_email") + "</p>");
+            } else {
+                out.println("<h3 style='color:red;'>Customer Not Found</h3>");
+            }
+
+            con.close();
+        } catch (Exception e) {
+            out.println("<h3 style='color:red;'>Error: " + e.getMessage() + "</h3>");
+        }
+    }
+}
+CREATE TABLE customer (
+    customer_number VARCHAR(10) PRIMARY KEY,
+    customer_name VARCHAR(100),
+    customer_email VARCHAR(100)
+);
+
+INSERT INTO customer VALUES ('C1001', 'John Doe', 'john@example.com');
+INSERT INTO customer VALUES ('C1002', 'Jane Smith', 'jane@example.com');
+
+
+Question 2
+import java.sql.*;
+
+public class DonorTableMetadata {
+    public static void main(String[] args) {
+        try {
+            // Database connection
+            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/YOUR_DATABASE", "USERNAME", "PASSWORD");
+
+            // Execute query
+            PreparedStatement pst = con.prepareStatement("SELECT * FROM DONAR");
+            ResultSetMetaData rsmd = pst.getMetaData();
+
+            // Get column count
+            int columnCount = rsmd.getColumnCount();
+            System.out.println("DONAR Table Column Details:");
+
+            for (int i = 1; i <= columnCount; i++) {
+                System.out.println("Column " + i + ":");
+                System.out.println("  Name: " + rsmd.getColumnName(i));
+                System.out.println("  Type: " + rsmd.getColumnTypeName(i));
+                System.out.println("  Size: " + rsmd.getColumnDisplaySize(i));
+                System.out.println("------------------------");
+            }
+
+            con.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+}

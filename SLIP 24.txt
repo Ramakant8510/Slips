@@ -1,0 +1,77 @@
+Slip no 24
+Que 1
+
+import javax.swing.*;
+import java.awt.*;
+
+public class ScrollingText extends JPanel {
+    private String text = " Welcome to Java Programming! ";
+    private int x = 0;
+
+    public ScrollingText() {
+        Timer timer = new Timer(100, e -> {
+            x += 5;
+            if (x > getWidth()) {
+                x = -getFontMetrics(getFont()).stringWidth(text);
+            }
+            repaint();
+        });
+        timer.start();
+    }
+
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        g.setFont(new Font("Arial", Font.BOLD, 24));
+        g.drawString(text, x, 50);
+    }
+
+    public static void main(String[] args) {
+        JFrame frame = new JFrame("Scrolling Text");
+        ScrollingText panel = new ScrollingText();
+        frame.add(panel);
+        frame.setSize(500, 150);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setVisible(true);
+    }
+}
+
+Que 2 
+
+login.jsp :
+
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
+<%
+    String username = request.getParameter("username");
+    String password = request.getParameter("password");
+
+    if (username != null && password != null && username.equals(password)) {
+        response.sendRedirect("Login.html");
+    } else {
+        response.sendRedirect("Error.html");
+    }
+%>
+
+Login.html :
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Login Success</title>
+</head>
+<body>
+    <h2>Login Successfully</h2>
+</body>
+</html>
+
+Error.html :
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Login Failed</title>
+</head>
+<body>
+    <h2>Login Failed</h2>
+</body>
+</html>

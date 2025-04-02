@@ -1,0 +1,99 @@
+Slip no 10
+Que 1:
+
+package com.example.demo;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.time.LocalDate;
+
+@SpringBootApplication
+public class DateApplication {
+    public static void main(String[] args) {
+        SpringApplication.run(DateApplication.class, args);
+    }
+}
+
+@RestController
+@RequestMapping("/date")
+class DateController {
+    @GetMapping
+    public String getCurrentDate() {
+        return "Current Date: " + LocalDate.now();
+    }
+}
+
+Que 2 :
+
+
+Database Table (Assumption)
+
+Student (RNo INT, SName VARCHAR(50), Per FLOAT)
+
+Java Swing Program with JDBC :
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+import java.sql.*;
+
+public class StudentRecord extends JFrame {
+    private JTextField rnoField, nameField, perField;
+    private JButton fetchButton;
+    
+    public StudentRecord() {
+        setTitle("Student Record");
+        setLayout(new GridLayout(4, 2));
+
+        add(new JLabel("Roll No:"));
+        rnoField = new JTextField(20);
+        add(rnoField);
+
+        add(new JLabel("Student Name:"));
+        nameField = new JTextField(20);
+        add(nameField);
+
+        add(new JLabel("Percentage:"));
+        perField = new JTextField(20);
+        add(perField);
+
+        fetchButton = new JButton("Fetch Record");
+        add(fetchButton);
+
+        fetchButton.addActionListener(e -> fetchStudentRecord());
+
+        setSize(300, 200);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setVisible(true);
+    }
+
+    private void fetchStudentRecord() {
+        try {
+            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/yourdatabase", "username", "password");
+            Statement stmt = con.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT * FROM Student LIMIT 1");
+
+            if (rs.next()) {
+                rnoField.setText(String.valueOf(rs.getInt("RNo")));
+                nameField.setText(rs.getString("SName"));
+                perField.setText(String.valueOf(rs.getFloat("Per")));
+            } else {
+                JOptionPane.showMessageDialog(this, "No records found.");
+            }
+
+            rs.close();
+            stmt.close();
+            con.close();
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(this, "Error: " + ex.getMessage());
+        }
+    }
+
+    public static void main(String[] args) {
+        new StudentRecord();
+    }
+}

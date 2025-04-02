@@ -1,0 +1,104 @@
+Slip 18 
+Question 1
+class MyThread extends Thread {
+    @Override
+    public void run() {
+        // Thread execution logic
+        System.out.println("Thread is running.");
+    }
+}
+
+public class ThreadPriorityExample {
+    public static void main(String[] args) {
+        // Create a thread
+        MyThread thread = new MyThread();
+
+        // Set the name and priority of the thread
+        thread.setName("WorkerThread");
+        thread.setPriority(Thread.MAX_PRIORITY); // Maximum priority (10)
+
+        // Display the thread's name and priority
+        System.out.println("Thread Name: " + thread.getName());
+        System.out.println("Thread Priority: " + thread.getPriority());
+
+        // Start the thread
+        thread.start();
+    }
+}
+
+Question 2
+import javax.servlet.*;
+import javax.servlet.http.*;
+import java.io.*;
+
+public class StudentServlet extends HttpServlet {
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        // Set content type for the response
+        response.setContentType("text/html");
+        PrintWriter out = response.getWriter();
+
+        // Accept student details from the form
+        String seatNo = request.getParameter("SeatNo");
+        String studentName = request.getParameter("Stud_Name");
+        String studentClass = request.getParameter("Class");
+        int totalMarks = Integer.parseInt(request.getParameter("Total_Marks"));
+        int maxMarks = 500; // Assuming total maximum marks are 500
+
+        // Calculate percentage
+        double percentage = (totalMarks / (double) maxMarks) * 100;
+
+        // Determine grade based on percentage
+        String grade;
+        if (percentage >= 90) {
+            grade = "A+";
+        } else if (percentage >= 80) {
+            grade = "A";
+        } else if (percentage >= 70) {
+            grade = "B+";
+        } else if (percentage >= 60) {
+            grade = "B";
+        } else if (percentage >= 50) {
+            grade = "C";
+        } else {
+            grade = "F";
+        }
+
+        // Display student details and results
+        out.println("<html><body>");
+        out.println("<h1>Student Details</h1>");
+        out.println("<table border='1'>");
+        out.println("<tr><td>Seat No:</td><td>" + seatNo + "</td></tr>");
+        out.println("<tr><td>Student Name:</td><td>" + studentName + "</td></tr>");
+        out.println("<tr><td>Class:</td><td>" + studentClass + "</td></tr>");
+        out.println("<tr><td>Total Marks:</td><td>" + totalMarks + "</td></tr>");
+        out.println("<tr><td>Percentage:</td><td>" + percentage + "%</td></tr>");
+        out.println("<tr><td>Grade:</td><td>" + grade + "</td></tr>");
+        out.println("</table>");
+        out.println("</body></html>");
+    }
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Student Details Form</title>
+</head>
+<body>
+    <h2>Enter Student Details</h2>
+    <form action="StudentServlet" method="POST">
+        <label for="SeatNo">Seat No:</label><br>
+        <input type="text" id="SeatNo" name="SeatNo" required><br><br>
+
+        <label for="Stud_Name">Student Name:</label><br>
+        <input type="text" id="Stud_Name" name="Stud_Name" required><br><br>
+
+        <label for="Class">Class:</label><br>
+        <input type="text" id="Class" name="Class" required><br><br>
+
+        <label for="Total_Marks">Total Marks:</label><br>
+        <input type="number" id="Total_Marks" name="Total_Marks" required><br><br>
+
+        <input type="submit" value="Submit">
+    </form>
+</body>
+</html>

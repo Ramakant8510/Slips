@@ -1,0 +1,82 @@
+Slip no 9 :
+Que 1 :
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+
+public class BallMovement extends JPanel implements ActionListener {
+    private int x = 100; // Ball's X position
+    private int y = 50;  // Ball's Y position
+    private int direction = 1; // 1 for moving down, -1 for moving up
+    private Timer timer;
+
+    public BallMovement() {
+        timer = new Timer(10, this); // Timer updates every 10 ms
+    }
+
+    @Override
+    public void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        g.setColor(Color.RED);
+        g.fillOval(x, y, 30, 30); // Draw the ball
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if (y >= getHeight() - 30 || y <= 0) {
+            direction *= -1; // Change direction if it hits top or bottom
+        }
+        y += direction * 5; // Move the ball
+        repaint(); // Repaint the panel
+    }
+
+    public static void main(String[] args) {
+        JFrame frame = new JFrame("Ball Movement");
+        BallMovement panel = new BallMovement();
+
+        JButton startButton = new JButton("Start");
+        startButton.addActionListener(e -> panel.timer.start()); // Start the ball movement on button click
+
+        frame.setLayout(new BorderLayout());
+        frame.add(panel, BorderLayout.CENTER);
+        frame.add(startButton, BorderLayout.SOUTH);
+        frame.setSize(400, 400);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setVisible(true);
+    }
+}
+
+Que 2 :
+
+package com.example.demo;
+
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class DemoApplication implements CommandLineRunner {
+
+    public static void main(String[] args) {
+        SpringApplication.run(DemoApplication.class, args);
+    }
+
+    @Override
+    public void run(String... args) throws Exception {
+        System.out.println("If you can't explain it simply, you don't understand it well enough.");
+    }
+}
+
+• XML
+
+<dependencies>
+    <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter</artifactId>
+    </dependency>
+    <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-web</artifactId>
+    </dependency>
+</dependencies>
